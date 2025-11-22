@@ -1,0 +1,44 @@
+@model IEnumerable<COMP2139_ICE.Areas.ProjectManagement.Models.Project>
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<h1>Projects</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Project</a>
+</p>
+
+@if (ViewData["SearchPerformed"] as bool? == true && !Model.Any())
+{
+    <div class="alert alert-info">
+        No projects found matching "<strong>@ViewData["CurrentFilter"]</strong>"
+    </div>
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Name)</th>
+        <th>@Html.DisplayNameFor(model => model.Description)</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name, "ProjectName")</td>
+            <td>@Html.DisplayFor(modelItem => item.Description, "ProjectDescription")</td>
+            <td>@Html.DisplayFor(modelItem => item.Status)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProjectId" class="btn btn-warning btn-sm">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.ProjectId" class="btn btn-info btn-sm">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.ProjectId" class="btn btn-danger btn-sm">Delete</a>
+                <a asp-controller="ProjectTask" asp-action="Index" asp-route-projectId="@item.ProjectId" class="btn btn-secondary btn-sm">View Tasks</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
